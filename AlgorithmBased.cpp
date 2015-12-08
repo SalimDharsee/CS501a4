@@ -80,12 +80,36 @@ void frequencybased(char *File1, char *File2, char *File3){
 	i = k;
 	memset(ir + k, 0, (2*totalsize) -1);
 	memset(complex, 0, (2*totalsize));
+	//calling the FFT algorithm with the padded results of the inputfile and the irfile
 	fastfouriertransform(input-1, totalsize, 1);
 	fastfouriertransform(ir-1, totalsize, 1);
+	// the fft algorithm produces a complex number
+	calculation(input, ir, complex, totalsize);
+	fastfouriertransform(complex-1, totalsize,-1);
+
+	for(i=0; i < totalsize; i++){
+		complex[i*2] /= (float)totalsize;
+		complex[(i*2)+1] /= (float)totalsize;
+	}
+
+	for(i=0, k=0; i < outputFileSignalSize; i++, k+=2){
+		outputFileSignal[i]=complex[k];
+	}
+	// Using the scale function used in timebased.cpp
+	wavScale(outputFileSignal,outputFileSignalSize);
+	Wave_Write(createdWav, outputFileSignalSize, outputFileSignal);
 
 }
 
+void calculation(float wavInput[], float irInput[], float result[], int size){
+	int i, temporay = 0;
+	for(i = 0; i < size; i++){
+		temporay = i * 2;
+		result[temporay] = wavInput[temporay] * irInput[temporay] - wavInput[temporay+1] * irInput[temporay+1];
+		result[temporay +1] = wavInput[temporay+1] * irInput[temporay] - wavInput[temporay] * irInput[temporay+1];
 
+	}
+}
 // This was given to us on the handout labeled Fast Fourier Theorem
 // The array is filled withe complex numbers and the signal is real
 void fastfouriertransform(float data[], int nn, int isign){
