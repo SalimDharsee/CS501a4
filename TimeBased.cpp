@@ -213,7 +213,7 @@ float* readData(char *fileName, float *signal, int *Thesize)
 	{
 		inputFile.read((char*) &wavData[j], 2);
 	}
-	printf("\nDone reading...now producing signal\n");
+	printf("\n Creating Signal\n");
 
 	// Creating the signal that we will use for the convolution
 	// This method was influenced by our lecture notes

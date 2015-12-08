@@ -12,19 +12,28 @@
 #include <string.h>
 #include "TimeBased.h"
 #include <math.h>
+#include <time.h>
 int fsize;
+clock_t t1, t2;
 #define PI	3.141592653589793
 #define TWO_PI	(2.0 * PI)
 #define SWAP(a,b)	tempr=(a);(a)=(b);(b)=tempr
+
 int main(int argc, char *argv[]){
+	t1 = clock();
 	//remove comments to run TimeBased test
-	//timebased(argv[1], argv[2], argv[3]);
+	timebased(argv[1], argv[2], argv[3]);
 	// running frequency based code
-	frequencybased(argv[1], argv[2], argv[3]);
+	//frequencybased(argv[1], argv[2], argv[3]);
+	t2 = clock();
+	float diff = (t2 - t1)/CLOCKS_PER_SEC;
+	printf("%f",diff);
+	return -1;
 
 }
 // The reading and writing portion was taken from my TimeBased.cpp file
 void frequencybased(char *File1, char *File2, char *File3){
+
 	printf("Frequency Based\n");
 	// getting the command line arguments
 	char *DryWave = File1; // dry wave file
@@ -97,10 +106,11 @@ void frequencybased(char *File1, char *File2, char *File3){
 	}
 	// Using the scale function used in timebased.cpp
 	wavScale(outputFileSignal,outputFileSignalSize);
+	// Using the write function used in timebased.cpp
 	Wave_Write(createdWav, outputFileSignalSize, outputFileSignal);
 
 }
-
+// This calculation was created with help of online references along with course documents
 void calculation(float wavInput[], float irInput[], float result[], int size){
 	int i, temporay = 0;
 	for(i = 0; i < size; i++){
@@ -140,7 +150,7 @@ void fastfouriertransform(float data[], int nn, int isign){
 	    while (n > mmax)
 	    {
 	    	istep = mmax << 1;
-	    	theta = isign * (6.28318530717959 / mmax);
+	    	theta = isign * ((2.0 * PI) / mmax);
 	    	wtemp = sin(0.5 * theta);
 	    	wpr = -2.0 * wtemp * wtemp;
 	    	wpi = sin(theta);
