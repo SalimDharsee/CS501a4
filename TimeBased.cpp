@@ -30,8 +30,8 @@ int16_t bPS;
 char *SC2ID;
 int wavSize;
 short* wavData;
-char input;
-clock_t start_t, end_t, total_t;
+
+
 
 
 /*
@@ -39,19 +39,16 @@ clock_t start_t, end_t, total_t;
  * Specifically the files Main.c and Testtone.c where aided in reading and writing the wave files
  * Any similiarties in code should be assumed to be from this
  */
-int main(int argc, char* argv[])
+void timebased(char *File1, char *File2, char *File3)
 {
 	// While i was testing, it would seem to ignore my prints until the very end, so if the program is run just wait until the convolution is complete
 
-	printf("Starting>>\n");
-	// Starting the clock time for the time based convolution
-	start_t = clock();
-	printf("Time Based Convolution");
+	printf("Time Based\n");
 
 	// getting the command line arguments
-	char *DryWave = argv[1]; // dry wave file
-	char *IRWave = argv[2]; // impulse response
-	char *createdWav = argv[3]; // the output wave file
+	char *DryWave = File1; // dry wave file
+	char *IRWave = File2; // impulse response
+	char *createdWav = File3; // the output wave file
 	// initializing the variables for the file size
 	int inputFileSignalSize;
 	int IRFileSignalSize;
@@ -80,18 +77,14 @@ int main(int argc, char* argv[])
 	Wave_Write(createdWav, outputFileSignalSize, outputFileSignal);
 
 	printf("Output Wave Created: %s\n", createdWav);
-	end_t = clock();
-	total_t = (double)(end_t - start_t);
-	printf("Clock: %f", total_t);
 
-	return 1;
 }
 
 // This is the method that is responsible for scaling the signal file,
 // The code was aided with the lectures notes in class along with tutorial notes
 void wavScale(float signal[], int samples)
 {
-	printf("Scaling signal file");
+	printf("Scaling signal file\n");
 	float min = 0, max = 0;
 	int i = 0;
 
@@ -136,7 +129,7 @@ void Wave_Write(char *fileName, int numSamples, float *signal)
 	// opening the stream, setting parameters for the read
 	ofstream outFile( fileName, ios::out | ios::binary);
 
-	printf("Writing file: %f", fileName);
+	printf("Writing file: %s\n", fileName);
 	// getting the bytes for hte data chunk
 	int chunkSize = channelNum * numSamples * (bPS / 8);
 	// Checking the Riff header and setting its componenets
@@ -179,7 +172,7 @@ float* readData(char *fileName, float *signal, int *Thesize)
 	// opening the input stream
 	ifstream inputFile( fileName, ios::in | ios::binary);
 
-	printf("Reading File:");
+	printf("Reading file: %s\n", fileName);
 	// setting the stream to start at the beginning
 	inputFile.seekg(ios::beg);
 	// getting all of hte header data from the wave file
