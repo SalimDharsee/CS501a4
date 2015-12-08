@@ -3,6 +3,7 @@
 #ifndef TIMEBASED_H_
 #define TIMEBASED_H_
 
+
 void convolve(float x[], int N, float h[], int M, float y[], int P);
 void wavScale(float signal[], int samples);
 void timeBasedConvolution(float x[], int N, float h[], int M, float y[], int P);

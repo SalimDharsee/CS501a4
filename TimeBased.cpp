@@ -39,6 +39,7 @@ clock_t start_t, end_t, total_t;
  */
 int main(int argc, char* argv[])
 {
+
 	// Starting the clock time for the time based convolution
 	start_t = clock();
 	printf("Time Based Convolution");
