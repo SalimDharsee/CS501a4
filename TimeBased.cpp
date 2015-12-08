@@ -39,16 +39,16 @@ short* wavData;
  * Specifically the files Main.c and Testtone.c where aided in reading and writing the wave files
  * Any similiarties in code should be assumed to be from this
  */
-void timebased(char *File1, char *File2, char *File3)
+int main(int argc, char *argv[])
 {
 	// While i was testing, it would seem to ignore my prints until the very end, so if the program is run just wait until the convolution is complete
 
 	printf("Time Based\n");
 
 	// getting the command line arguments
-	char *DryWave = File1; // dry wave file
-	char *IRWave = File2; // impulse response
-	char *createdWav = File3; // the output wave file
+	char *DryWave = argv[1]; // dry wave file
+	char *IRWave = argv[2]; // impulse response
+	char *createdWav = argv[3]; // the output wave file
 	// initializing the variables for the file size
 	int inputFileSignalSize;
 	int IRFileSignalSize;

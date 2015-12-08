@@ -19,14 +19,14 @@ clock_t t1, t2;
 #define TWO_PI	(2.0 * PI)
 #define SWAP(a,b)	tempr=(a);(a)=(b);(b)=tempr
 
+
 int main(int argc, char *argv[]){
 	t1 = clock();
-	//remove comments to run TimeBased test
-	timebased(argv[1], argv[2], argv[3]);
+
 	// running frequency based code
 	//frequencybased(argv[1], argv[2], argv[3]);
 	t2 = clock();
-	float diff = (t2 - t1)/CLOCKS_PER_SEC;
+	float diff = (t2 - t1);
 	printf("%f",diff);
 	return -1;
 
