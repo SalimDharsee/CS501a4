@@ -30,7 +30,9 @@ int16_t bPS;
 char *SC2ID;
 int wavSize;
 short* wavData;
+char input;
 clock_t start_t, end_t, total_t;
+
 
 /*
  * Please not that much of this code was taken from the online files that were given to us by our TAS and Professor Manzara
@@ -39,7 +41,9 @@ clock_t start_t, end_t, total_t;
  */
 int main(int argc, char* argv[])
 {
+	// While i was testing, it would seem to ignore my prints until the very end, so if the program is run just wait until the convolution is complete
 
+	printf("Starting>>\n");
 	// Starting the clock time for the time based convolution
 	start_t = clock();
 	printf("Time Based Convolution");
@@ -65,7 +69,10 @@ int main(int argc, char* argv[])
 	// Initialiting the array for the new signal
 	float *outputFileSignal = new float[outputFileSignalSize];
 	// The convolution method given to use in class
+
 	timeBasedConvolution(inputFileSignal, inputFileSignalSize, IRFileSignal, IRFileSignalSize, outputFileSignal, outputFileSignalSize);
+
+
 	// Scaling the wave back
 	wavScale(outputFileSignal, outputFileSignalSize);
 
@@ -172,7 +179,7 @@ float* readData(char *fileName, float *signal, int *Thesize)
 	// opening the input stream
 	ifstream inputFile( fileName, ios::in | ios::binary);
 
-	printf("Reading File: %c", fileName);
+	printf("Reading File:");
 	// setting the stream to start at the beginning
 	inputFile.seekg(ios::beg);
 	// getting all of hte header data from the wave file
