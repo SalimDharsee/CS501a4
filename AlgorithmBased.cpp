@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "TimeBased.h"
 #include <math.h>
 int fsize;
@@ -46,11 +47,47 @@ void frequencybased(char *File1, char *File2, char *File3){
 	// Initialiting the array for the new signal
 	float *outputFileSignal = new float[outputFileSignalSize];
 	// The convolution method given to use in class
+
+	int padSize = inputFileSignalSize + IRFileSignalSize - 1;
+	int totalsize = 1;
+	int a = 0;
+	while(totalsize < padSize){
+		totalsize <<= a;
+		a++;
+	}
+	// pad for the dry wave file
+	float *complex = new float [2*totalsize];
+	float *input = new float[2*totalsize];
+	float *ir = new float [2*totalsize];
+
+	int i, k;
+	for(i = 0, k = 0; i < inputFileSignalSize; i++, k+=2)
+	{
+	    input[k] = inputFileSignal[i];
+	    input[k + 1] = 0;
+	}
+	// pad for the impulse response file
+	i = k;
+	memset(input + k, 0, (2*totalsize) -1);
+
+
+	for(i = 0, k = 0; i < IRFileSignalSize; i++, k+=2)
+	{
+	    ir[k] = IRFileSignal[i];
+	    ir[k + 1] = 0;
+	}
+	i = k;
+	memset(ir + k, 0, (2*totalsize) -1);
+	memset(complex, 0, (2*totalsize));
+	fastfouriertransform(input-1, totalsize, 1);
+	fastfouriertransform(ir-1, totalsize, 1);
+
 }
+
 
 // This was given to us on the handout labeled Fast Fourier Theorem
 // The array is filled withe complex numbers and the signal is real
-void fastfouriertransform(double data[], int nn, int isign){
+void fastfouriertransform(float data[], int nn, int isign){
 	 unsigned long n, mmax, m, j, istep, i;
 	    float wtemp, wr, wpr, wpi, wi, theta;
 	    float tempr, tempi;
@@ -102,21 +139,5 @@ void fastfouriertransform(double data[], int nn, int isign){
 	    	mmax = istep;
 	    }
 }
-void createComplexSine(double data[], int size, int harmonicNumber){
-	int i, ii;
-	for (i = 0, ii = 0; i < size; i++, ii+=2){
-		data[ii] = sin((double)harmonicNumber * (double)i *TWO_PI / (double)size);
-		data[ii+1] = 0.0;
 
-	}
-}
-// This was given to us on the handout labeled Fast Fourier Theorem
-// The array is filled with complex numbers and the signal is real
-void createComplexCosine(double data[], int size, int harmonicNumber ){
-	int i, ii;
-		for (i = 0, ii = 0; i < size; i++, ii+=2){
-			data[ii] = cos((double)harmonicNumber * (double)i *TWO_PI / (double)size);
-			data[ii+1] = 0.0;
-		}
-}
 
